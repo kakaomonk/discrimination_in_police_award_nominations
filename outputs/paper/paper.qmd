@@ -50,7 +50,12 @@ number_of_officer <- month_data |>
 #all data of every officer
 all_officer <- month_data |>
   group_by(nuid) |>
-  summarise(total_month = max(unit_duration), birth = max(birth_year), arrest = sum(arrest_total), Complaints = sum(cmpl_civ), Gender = max(female), White = max(white), Black = max(black))
+  summarise(total_month = max(unit_duration), birth = max(birth_year), arrest = sum(arrest_total), Complaints = sum(cmpl_civ), Gender = max(female), White = max(white), Black = max(black), awd_perf = sum(awd_perf))
+
+#all data of every officer from year data
+all_officer_year <- year_data |>
+  group_by(nuid) |>
+  summarise(birth = max(birth_year), arrest = sum(arrest_total), Complaints = sum(cmpl_civ), Female = max(female), White = max(white), Black = max(black), Asian = max(asian), Hisp = max(hisp), Natam = max(natam), awd_perf = sum(awd_perf))
 
 #all data of every white officer
 white_officer <- month_data |>
@@ -146,27 +151,38 @@ Talk way more about it.
 
 # Model
 
-The goal of our modelling strategy is twofold. Firstly,...
 
-Here we briefly describe the Bayesian analysis model used to investigate... Background details and diagnostics are included in [Appendix -@sec-model-details].
 
 ## Model set-up
-
+Original Model
 ```{=tex}
-\begin{align} 
-y_it|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
-\mu_i &= \alpha + \beta_i + \gamma_i\\
-\alpha &\sim \mbox{Normal}(0, 2.5) \\
-\beta &\sim \mbox{Normal}(0, 2.5) \\
-\gamma &\sim \mbox{Normal}(0, 2.5) \\
-\sigma &\sim \mbox{Exponential}(1)
-\end{align}
-
 \begin{align}
-y_{it} &= \beta_0 + \beta_2 Female_i +
+y_{it} &= \beta_0 + \beta_1 Black_i + \beta_2 Female_i + \beta_3 Hispanic_i \\
+&+ \beta_4 Asian_i + \beta_5 NatAm_i + X_{it} + u_{it}
 \end{align}
 ```
-We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`.
+
+```{r}
+#| echo: false
+org_model <- lm(awd_perf ~ Black + Female + Hisp + Asian + Natam, data = all_officer_year)
+org_model
+```
+
+
+Model 1
+```{=tex}
+\begin{align}
+y &= \beta_0 + \beta_1 Black_i + \beta_2 Female_i + \beta_3 Hispanic_i \\
+&+ \beta_4 Asian_i + \epsilon
+\end{align}
+```
+
+```{r}
+#| echo: false
+modified_model <- lm(awd_perf ~ Black + Female + Hisp + Asian, data = all_officer_year)
+modified_model
+```
+
 
 ### Model justification
 
