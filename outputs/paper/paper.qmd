@@ -50,6 +50,7 @@ number_of_officer <- month_data |>
 #all data of every officer
 all_officer <- month_data |>
   group_by(nuid) |>
+  filter(unit == 44) |>
   summarise(total_month = max(unit_duration), birth = max(birth_year), arrest = sum(arrest_total), Complaints = sum(cmpl_civ), Gender = max(female), White = max(white), Black = max(black), awd_perf = sum(awd_perf))
 
 #all data of every officer from year data
@@ -60,25 +61,25 @@ all_officer_year <- year_data |>
 #all data of every white officer
 white_officer <- month_data |>
   group_by(nuid) |>
-  filter(white == 1) |>
+  filter(white == 1 & unit == 44) |>
   summarise(total_month = max(unit_duration), birth = max(birth_year), arrest = sum(arrest_total), Complaints = sum(cmpl_civ), Gender = max(female), White = max(white), Black = max(black))
 
 #all data of every black officer
 black_officer <- month_data |>
   group_by(nuid) |>
-  filter(black == 1) |>
+  filter(black == 1 & unit == 44) |>
   summarise(total_month = max(unit_duration), birth = max(birth_year), arrest = sum(arrest_total), Complaints = sum(cmpl_civ), Gender = max(female), White = max(white), Black = max(black))
 
 #all data of every male officer
 male_officer <- month_data |>
   group_by(nuid) |>
-  filter(female == 0) |>
+  filter(female == 0 & unit == 44) |>
   summarise(total_month = max(unit_duration), birth = max(birth_year), arrest = sum(arrest_total), Complaints = sum(cmpl_civ), Gender = max(female), White = max(white), Black = max(black))
 
 #all data of every female officer
 female_officer <- month_data |>
   group_by(nuid) |>
-  filter(female == 1) |>
+  filter(female == 1 & unit == 44) |>
   summarise(total_month = max(unit_duration), birth = max(birth_year), arrest = sum(arrest_total), Complaints = sum(cmpl_civ), Gender = max(female), White = max(white), Black = max(black))
 
 #reproduce Table 1
@@ -129,10 +130,11 @@ kable(baseline_characteristics)
 According to the TABLE 1 [Table 1— Baseline Characteristics ] ...
 
 ```{r}
-#| label: Table 2
+#| label: Figure 1 ()
 #| fig-cap: Bills of penguins
 #| echo: false
-
+ggplot(all_officer, aes(x=all_officer$total_month, y=arrest)) + 
+  geom_point(shape=18, color="blue")
 
 ```
 
