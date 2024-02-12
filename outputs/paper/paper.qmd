@@ -22,6 +22,7 @@ library(tidyverse)
 library(haven)
 library(usethis)
 library(here)
+library(knitr)
 library(palmerpenguins)
 ```
 
@@ -33,11 +34,11 @@ The remainder of this paper is structured as follows. @sec-data....
 
 # Data {#sec-data}
 
-The raw-data is archieved from a research about disparties of police nomination in Chicago. Some of our data is of penguins (@fig-bills), from @palmerpenguins.
+The raw data was achieved from a paper "https://www.aeaweb.org/articles?id=10.1257/pandp.20201118". All improper variables were removed during the data-cleaning process for accurate results. The statistics of all police officers have been separated into each race/gender group to analyze factors of the award nomination. 
 
 ```{r}
-#| label: fig-bills
-#| fig-cap: Bills of penguins
+#| label: Table 1
+#| fig-cap: Table
 #| echo: false
 month_data <- read_dta(here("inputs/data/officer_month_data.dta"))
 year_data <- read_dta(here("inputs/data/officer_year_data.dta"))
@@ -46,9 +47,34 @@ number_of_officer <- month_data |>
   group_by(nuid) |>
   summarise()
 
+#all data of every officer
 all_officer <- month_data |>
   group_by(nuid) |>
-  summarise(total_month = max(unit_duration), birth = max(birth_year), arrest = sum(arrest_total), Complaints = sum(cmpl_civ), Gender = max(female))
+  summarise(total_month = max(unit_duration), birth = max(birth_year), arrest = sum(arrest_total), Complaints = sum(cmpl_civ), Gender = max(female), White = max(white), Black = max(black))
+
+#all data of every white officer
+white_officer <- month_data |>
+  group_by(nuid) |>
+  filter(white == 1) |>
+  summarise(total_month = max(unit_duration), birth = max(birth_year), arrest = sum(arrest_total), Complaints = sum(cmpl_civ), Gender = max(female), White = max(white), Black = max(black))
+
+#all data of every black officer
+black_officer <- month_data |>
+  group_by(nuid) |>
+  filter(black == 1) |>
+  summarise(total_month = max(unit_duration), birth = max(birth_year), arrest = sum(arrest_total), Complaints = sum(cmpl_civ), Gender = max(female), White = max(white), Black = max(black))
+
+#all data of every male officer
+male_officer <- month_data |>
+  group_by(nuid) |>
+  filter(female == 0) |>
+  summarise(total_month = max(unit_duration), birth = max(birth_year), arrest = sum(arrest_total), Complaints = sum(cmpl_civ), Gender = max(female), White = max(white), Black = max(black))
+
+#all data of every female officer
+female_officer <- month_data |>
+  group_by(nuid) |>
+  filter(female == 1) |>
+  summarise(total_month = max(unit_duration), birth = max(birth_year), arrest = sum(arrest_total), Complaints = sum(cmpl_civ), Gender = max(female), White = max(white), Black = max(black))
 
 #reproduce Table 1
 avg_brith_of_officer <- month_data |>
@@ -60,13 +86,51 @@ avg_start_of_officer <- month_data |>
   summarise(birth = mean(start_month))
 
 #make a dataframe for baseline table
-baseline_characteristics <- data.frame(c("Everyone", "White", "Black", "Male", "Female"))
+#average birth year of each race/gender group
+all_birth_year <- c(mean(all_officer$birth), 
+                    mean(white_officer$birth), mean(black_officer$birth),
+                    mean(male_officer$birth), mean(female_officer$birth))
+
+#average training duration of each race/gender group
+all_training <- c(mean(all_officer$total_month), 
+                    mean(white_officer$total_month), mean(black_officer$total_month),
+                    mean(male_officer$total_month), mean(female_officer$total_month))
+
+#average number of complaints of each race/gender group
+all_complain <- c(mean(all_officer$Complaints), 
+                    mean(white_officer$Complaints), mean(black_officer$Complaints),
+                    mean(male_officer$Complaints), mean(female_officer$Complaints))
+
+#average number of arrests of each race/gender group
+all_arrest <- c(mean(all_officer$arrest), 
+                    mean(white_officer$arrest), mean(black_officer$arrest),
+                    mean(male_officer$arrest), mean(female_officer$arrest))
+
+#number of observations of each race/ gender group
+all_observation <- c(nrow(all_officer), 
+                     nrow(white_officer), nrow(black_officer), 
+                     nrow(male_officer), nrow(female_officer))
+
+Groups <- c("Everyone", "White", "Black", "Male", "Female")
+
+baseline_characteristics <- data.frame(Groups
+                                       , all_birth_year, all_training,
+                                       all_complain, all_arrest, 
+                                       all_observation)
+
+kable(baseline_characteristics)
+```
+
+According to the TABLE 1 [Table 1— Baseline Characteristics ] ...
+
+```{r}
+#| label: Table 2
+#| fig-cap: Bills of penguins
+#| echo: false
+
 
 ```
 
-Talk more about it.
-
-And also planes (@fig-planes). (You can change the height and width, but don't worry about doing that until you have finished every other aspect of the paper - Quarto will try to make it look nice and the defaults usually work well once you have enough text.)
 
 ```{r}
 #| label: fig-planes
