@@ -24,6 +24,7 @@ library(usethis)
 library(here)
 library(knitr)
 library(truncnorm)
+library(flextable)
 ```
 
 # Introduction
@@ -134,6 +135,7 @@ baseline_characteristics <- data.frame(Groups
                                        all_arrest, all_observation)
 
 kable(baseline_characteristics)
+as_flextable(baseline_characteristics)
 ```
 
 Table 1 shows the average characteristics of all new police officers in our dataset during their probationary period. On average, from our sample of 1714 observations, the typical new officer profile shows an age of approximately 27 years old and began training around June 2011. Over an average training period of 18.4 months, a new officer typically submitted 0.66 Tactical Response Reports, conducted 23.4 arrests, and received 0.45 of complaints. Some heterogeneity, though not large, is observed when examining the data across different rates and genders. Black and female officers who are considered minorities in policing departments, are 3 years and 1 year older than their white and male counterparts, respectively. Black officers are also trained a bit longer, 0.64 years compared to their white counterparts. The most noticeable differences between these majority and minority groups are the engagement of forceful interventions with black officers at 21.1 arrests on average compared to white officers at 24.8 arrests, and female officers at 20 arrests compared to male officers at 24.3 arrests over the probationary period. The differences are 3.7 arrests between white and black officers, and 4.3 arrests between male and female officers. These differences are statistically significant, but they are economically minor, translating to 0.21 arrests and 0.24 arrests differences every month respectively. The economically insignificant differences in the number of civilian complaints suggest that the chances of being at risk when officiating are nonetheless the same across these groups. From this table, we can conclude that from while our observations of different groups of officers: black, white, male, and female, officer cohorts are randomly constructed in terms of the training duration, and demographics, the disparities in arrest rates, use of force between genders and races underline the need to consider policing activity measures as control variables in our examination. 
@@ -195,13 +197,13 @@ y &= \beta_0 + \beta_1 Black_i + \beta_2 Female_i + \beta_3 Hispanic_i \\
 ```{r}
 #| echo: false
 modified_model <- lm(awd_perf ~ Black + Female + Hisp + Asian, data = all_officer_year)
-modified_model
+as_flextable(modified_model)
 ```
 ```{r}
 #| echo: false
 black_female <- lm(awd_perf ~ Black + Female + Black:Female, 
                    data = all_officer_year)
-black_female
+as_flextable(black_female)
 ```
 From this, we form a regression model to estimate the disparity gaps in award nomination between majority (white and/or male) and minority (black and/or female). The following model is the regression: y = beta0 + beta1*black + beta2*female + beta3*Hispanic + beta4*Asian where y is the number of award nomination received by an officer in one year. 
 
