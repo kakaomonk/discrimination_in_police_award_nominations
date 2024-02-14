@@ -137,12 +137,12 @@ Table 1 shows the average characteristics of all new police officers in our data
 #| label: Figure 1 ()
 #| fig-cap: Bills of penguins
 #| echo: false
-ggplot(all_officer, aes(x=total_month, y=arrest)) + 
+
+ggplot(all_officer, aes(x = Complaints, y = awd_perf)) + 
   geom_point(shape=18, color="blue")
 
-ggplot(all_officer, aes(x=arrest - Complaints, y=awd_perf)) + 
+ggplot(all_officer, aes(x = arrest, y = awd_perf)) + 
   geom_point(shape=18, color="blue")
-
 ```
 
 
