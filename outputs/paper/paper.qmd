@@ -23,7 +23,7 @@ library(haven)
 library(usethis)
 library(here)
 library(knitr)
-library(palmerpenguins)
+library(truncnorm)
 ```
 
 # Introduction
@@ -55,7 +55,7 @@ number_of_officer <- month_data |>
 all_officer <- month_data |>
   group_by(nuid) |>
   filter(unit == 44) |>
-  summarise(total_month = max(unit_duration), birth = max(birth_year), arrest = sum(arrest_total), Complaints = sum(cmpl_civ), Gender = max(female), White = max(white), Black = max(black), awd_perf = sum(awd_perf))
+  summarise(total_month = max(unit_duration), birth = max(birth_year), arrest = sum(arrest_total), Complaints = sum(cmpl_civ), Gender = max(female), White = max(white), Black = max(black), awd_perf = sum(awd_perf), use_force = sum(trr_new))
 
 #all data of every officer from year data
 all_officer_year <- year_data |>
@@ -66,25 +66,25 @@ all_officer_year <- year_data |>
 white_officer <- month_data |>
   group_by(nuid) |>
   filter(white == 1 & unit == 44) |>
-  summarise(total_month = max(unit_duration), birth = max(birth_year), arrest = sum(arrest_total), Complaints = sum(cmpl_civ), Gender = max(female), White = max(white), Black = max(black))
+  summarise(total_month = max(unit_duration), birth = max(birth_year), arrest = sum(arrest_total), Complaints = sum(cmpl_civ), Gender = max(female), White = max(white), Black = max(black), use_force = sum(trr_new))
 
 #all data of every black officer
 black_officer <- month_data |>
   group_by(nuid) |>
   filter(black == 1 & unit == 44) |>
-  summarise(total_month = max(unit_duration), birth = max(birth_year), arrest = sum(arrest_total), Complaints = sum(cmpl_civ), Gender = max(female), White = max(white), Black = max(black))
+  summarise(total_month = max(unit_duration), birth = max(birth_year), arrest = sum(arrest_total), Complaints = sum(cmpl_civ), Gender = max(female), White = max(white), Black = max(black), use_force = sum(trr_new))
 
 #all data of every male officer
 male_officer <- month_data |>
   group_by(nuid) |>
   filter(female == 0 & unit == 44) |>
-  summarise(total_month = max(unit_duration), birth = max(birth_year), arrest = sum(arrest_total), Complaints = sum(cmpl_civ), Gender = max(female), White = max(white), Black = max(black))
+  summarise(total_month = max(unit_duration), birth = max(birth_year), arrest = sum(arrest_total), Complaints = sum(cmpl_civ), Gender = max(female), White = max(white), Black = max(black), use_force = sum(trr_new))
 
 #all data of every female officer
 female_officer <- month_data |>
   group_by(nuid) |>
   filter(female == 1 & unit == 44) |>
-  summarise(total_month = max(unit_duration), birth = max(birth_year), arrest = sum(arrest_total), Complaints = sum(cmpl_civ), Gender = max(female), White = max(white), Black = max(black))
+  summarise(total_month = max(unit_duration), birth = max(birth_year), arrest = sum(arrest_total), Complaints = sum(cmpl_civ), Gender = max(female), White = max(white), Black = max(black), use_force = sum(trr_new))
 
 #reproduce Table 1
 avg_brith_of_officer <- month_data |>
@@ -121,12 +121,17 @@ all_observation <- c(nrow(all_officer),
                      nrow(white_officer), nrow(black_officer), 
                      nrow(male_officer), nrow(female_officer))
 
+#number of uses of force
+all_force <- c(mean(all_officer$use_force),
+              mean(white_officer$use_force), mean(black_officer$use_force),
+              mean(male_officer$use_force), mean(female_officer$use_force))
+
 Groups <- c("Everyone", "White", "Black", "Male", "Female")
 
 baseline_characteristics <- data.frame(Groups
                                        , all_birth_year, all_training,
-                                       all_complain, all_arrest, 
-                                       all_observation)
+                                       all_complain, all_force, 
+                                       all_arrest, all_observation)
 
 kable(baseline_characteristics)
 ```
@@ -138,25 +143,26 @@ Table 1 shows the average characteristics of all new police officers in our data
 #| fig-cap: Bills of penguins
 #| echo: false
 
-ggplot(all_officer, aes(x = Complaints, y = awd_perf)) + 
+comp_awd <- ggplot(all_officer, aes(x = Complaints, y = awd_perf)) + 
+  ggtitle("Plot of Award Score by Number of Complaints") +
+  xlab("Number of Complaints") + ylab("Award Score") +
   geom_point(shape=18, color="blue")
 
-ggplot(all_officer, aes(x = arrest, y = awd_perf)) + 
-  geom_point(shape=18, color="blue")
+comp_awd
 ```
-
 
 ```{r}
-#| label: fig-planes
-#| fig-cap: Relationship between wing length and width
+#| label: Figure 2 ()
+#| fig-cap: Bills of penguins
 #| echo: false
-#| warning: false
-#| message: false
 
+arr_awd <- ggplot(all_officer, aes(x = arrest, y = awd_perf)) + 
+  ggtitle("Plot of Award Score by Number of Arrests") +
+  xlab("Number of Arrests") + ylab("Award Score") +
+  geom_point(shape=18, color="red")
 
+arr_awd
 ```
-
-Talk way more about it.
 
 # Model
 
@@ -209,17 +215,6 @@ We can use maths by including latex between dollar signs, for instance $\theta$.
 
 Our results are summarized in @tbl-modelresults.
 
-```{r}
-#| echo: false
-#| eval: true
-#| warning: false
-#| message: false
-
-library(rstanarm)
-
-first_model <-
-  readRDS(file = here::here("outputs/models/first_model.rds"))
-```
 
 ```{r}
 #| echo: false
@@ -230,6 +225,24 @@ first_model <-
 
 
 ```
+
+# Simulation
+```{r}
+#| echo: false
+
+#### Simulate data ####
+# set seed for the simulation
+set.seed(1002415488)
+number_simulations <- 10000
+# set a distribution of award score with normal distribution (mean: 7.054227, sd: 4.553837 based on the raw-data).
+races <- c("White", "Asian", "Black", "Natam", "Hisp")
+# Simulate 10000 times
+sim_race <- replicate(number_simulations, c(sample(races, 1, replace = TRUE), rtruncnorm(1, a = 0, mean = mean(all_officer$awd_perf), sd = sd(all_officer$awd_perf))))
+
+gender <- c("Male", "Female")
+sim_gender <- replicate(number_simulations, c(sample(gender, 1, replace = TRUE), rtruncnorm(1, a = 0, mean = mean(all_officer$awd_perf), sd = sd(all_officer$awd_perf))))
+```
+
 
 # Discussion
 
