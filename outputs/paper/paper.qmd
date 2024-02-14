@@ -1,10 +1,9 @@
 ---
 title: "Discrimination in police award nomination in Chicago"
-subtitle: "My subtitle if needed"
 author: 
   - Hyungsoo Park
   - Jeongwoo Kim
-thanks: "Code and data are available at: LINK."
+thanks: "https://github.com/kakaomonk/discrimination_in_police_award_nominations_chicago"
 date: today
 date-format: long
 abstract: "This study investigates the racial and gender disparities in award nomination in the police department in Chicago by drawing a dataset that includes policing activities and award nominations. The original study highlighted both economically and statistically significant gaps between black and white officers, as well as male and female, in terms of award nominations. This paper aims to verify the existing biases within the policing organization and culture and explore the implications. Our study not only validates the original findings but also delves into the disparities in years of experience, and other potential variables ---. This replication contributes to the broader discourse on persistent disparities within policing culture by providing a thorough examination of the potential factors affecting award nominations."
@@ -29,17 +28,16 @@ library(flextable)
 
 # Introduction
 
-Racial discrimination has been a widely discussed social issue across the world, especially in the U.S that is the hub of all races. Black people have been continuously raising issues regarding the treatments of black people by the US police, which have created social movements such as Black Lives Matter. The interactions between law enforcements and racial disparities have been a focal point among scholars recently. These studies have been insightful in underlying systemic issues within policing practices, raising awareness and prompting calls for a change in the treatments of civilians from police officers to mitigate such biases. However, it has never been a focus on the discrimination of police officers within the police department in the U.S. The study by Rim Et al (2020), the original paper, deepens our understanding of this issue by examining the racial and gender disparities within police departments, especially in the case of Chicago Police Department (CPD).
+Racial discrimination has been a widely discussed social issue across the world, especially in the U.S that is the hub of all races. Black people have been continuously raising issues regarding the treatments of black people by the US police, which have created social movements such as Black Lives Matter, underscoring the urgency for societal reform and policy changes. The interactions between law enforcements and racial disparities have been a focal point among scholars recently. These studies have been insightful in underlying systemic issues within policing practices, raising awareness and prompting calls for a change in the treatments of civilians from police officers to mitigate such biases. However, it has never been a focus on the discrimination of police officers within the police department in the U.S. The study by Rim Et al (2020), the original paper, deepens our understanding of this issue by examining the racial and gender disparities within police departments, especially in the case of Chicago Police Department (CPD). This is critical as it may reflect broader systemic issues that perpetuate racial and gender biases. 
 
-By using a dataset comprised of policing activity, award nominations, and officer’s background, this research bridges the gap between labor market discrimination, the analysis focuses on departmental award nominations as a key metric of internal recognition to examine a potential bias against minority groups - black and female officers. We use award nomination rather than promotion as a performance indicator since promotion is rare in policing departments; therefore, this approach offers a more frequent and discernible measure of how the department values each officer. This replication study aims to reaffirm the findings of Rim Et al (2020) by replicating the methodological framework used in her paper to examine the results of award nominations within the CPD, controlling policing activities such as uses of force, number of civilian complaints, and number of arrests. By doing this, it seeks to disclose the internal police department dynamics, specifically how racial and gender disparities exist in law enforcement culture. This replication contributes to the broader discourse on labor market discrimination, particularly within the context of law enforcement, by providing a rigorous examination of the factors influencing award nominations and the potential impact of these disparities on minority representation and policing outcomes. We find a sizable and statistically significant gap in award nominations between black and white officers as well as female and male officers, confirming our initial hypothesis that there are racial and gender disparities within policing departments. We further develop this analysis by investigating --- , which is not done in the original paper. We use ---- to find out ----. We observe a significant ---- in our analysis, which reveals that ----. 
+By using a dataset comprised of policing activity, award nominations, and officer’s background, this research bridges the gap between labor market discrimination, the analysis focuses on departmental award nominations as a key metric of internal recognition to examine a potential bias against minority groups - black and female officers. We use award nomination rather than promotion as a performance indicator since promotion is rare in policing departments; therefore, this approach offers a more frequent and discernible measure of how the department values each officer. This study’s innovations include a detailed regression analysis from the original paper and discussing other potential variables which were not discussed in the original paper. This replication study aims to reaffirm the findings of Rim Et al (2020) by replicating the methodological framework used in her paper to examine the results of award nominations within the CPD, controlling policing activities such as uses of force, number of civilian complaints, and number of arrests. By doing this, it seeks to disclose the internal police department dynamics, specifically how racial and gender disparities exist in law enforcement culture. This replication contributes to the broader discourse on labor market discrimination, particularly within the context of law enforcement, by providing a rigorous examination of the factors influencing award nominations and the potential impact of these disparities on minority representation and policing outcomes. 
 
-In the original paper, the methodology to mitigate these confounding variables is using the CPD’s recruitment process in which potential recruits passing a written exam, followed by being randomly selected to enroll in the policy academy. They are then trained for 18 months during which officers are considered probationary. After that, officers are assigned to districts as per the needs of the CPD to minimize the potential biases of selecting districts as their liking. In the dataset, the authors have classified those who begin their service in the same district and quarter as ‘cohort’; in this way, they are able to make comparisons between black and/or female officers and white and/or male officers within the same cohort in award nominations since start dates and initial districts are randomized. In this reproduction paper, we have utilized the cleaned dataset from the original paper as the authors have not disclosed the raw dataset. Therefore, these confounding variables are effectively managed as the original paper. 
-
-# Data {#sec-data}
-
-The raw data was achieved from a paper "https://www.aeaweb.org/articles?id=10.1257/pandp.20201118". All improper variables were removed during the data-cleaning process for accurate results. The statistics of all police officers have been separated into each race/gender group to analyze factors of the award nomination. 
+We find a sizable and statistically significant gap in award nominations between black and white officers as well as female and male officers, confirming our initial hypothesis that there are racial and gender disparities within policing departments. This indicates a persistent inequity with black officers receiving approximately 28 percent fewer nominations than their white counterparts, and female officers receiving 34 percent fewer nominations than their male counterparts. These disparities carry implications for the existence of discrimination within the policing department. The intersectionality of race and gender further makes this a serious issue as black female officers face a compounded disadvantage. This research has its implications not only in academia but also in real life. The findings inform policy debates and interventions to make the police force more equitable and effective. This paper is structured to first introducing a detailed analysis of the CPD dataset, followed by presenting our methodological approach and regression model findings and results. We then introduce our discussion in terms of relationships between complaints and award nominations and arrests and award nominations separately. Our work contributes to the disclose of labor market discrimination within law enforcement, urging for a more equitable recognition system. 
+# Data
 
 We have used the same datasets from the original paper that constructed a personnel database of Chicago Police Department (CPD) officers. These variables include demographics, rank, tenure, district assignment, awards, arrests, uses of force measured by Tactical Response Reports fillings (Nayoung Rim, Bocar Ba, Roman Rivera, 202). We have gathered the dataset from the years 2007 to 2015. To explore whether racial or gender gap exists in award nomination, it is important to control for confounding variables since they can influence outcomes correlated with race or gender. For example, the dataset shows that older, hence more experienced officers tend to have higher chances of being nominated. In the case of Chicago officers, blacker officers are 3 years older than white officers on average, respectively. If we do not control for age, then we will mistakenly conclude that black officers have a higher chance of getting the award. Another area of concern is the fact that different officers are assigned to different neighborhoods in Chicago with varying crime rates. In general, crime rates tend to be higher in black and Hispanic neighborhoods than that of white. Black officers who tend to be more likely to be assigned in black neighborhoods are more likely to conduct more arrests compared to their colleagues who are assigned in lower crime rates neighborhoods. This, in return, gives them more chances to win award nominations. 
+
+In the original paper, the methodology to mitigate these confounding variables is using the CPD’s recruitment process in which potential recruits passing a written exam, followed by being randomly selected to enroll in the policy academy. They are then trained for 18 months during which officers are considered probationary. After that, officers are assigned to districts as per the needs of the CPD to minimize the potential biases of selecting districts as their liking. In the dataset, the authors have classified those who begin their service in the same district and quarter as ‘cohort’; in this way, they are able to make comparisons between black and/or female officers and white and/or male officers within the same cohort in award nominations since start dates and initial districts are randomized. In this reproduction paper, we have utilized the cleaned dataset from the original paper as the authors have not disclosed the raw dataset. Therefore, these confounding variables are effectively managed as the original paper. 
 
 ```{r}
 #| label: Table 1
@@ -137,40 +135,10 @@ baseline_characteristics <- data.frame(Groups
 kable(baseline_characteristics)
 ```
 
-Table 1 shows the average characteristics of all new police officers in our dataset during their probationary period. On average, from our sample of 1714 observations, the typical new officer profile shows an age of approximately 27 years old and began training around June 2011. Over an average training period of 18.4 months, a new officer typically submitted 0.66 Tactical Response Reports, conducted 23.4 arrests, and received 0.45 of complaints. Some heterogeneity, though not large, is observed when examining the data across different rates and genders. Black and female officers who are considered minorities in policing departments, are 3 years and 1 year older than their white and male counterparts, respectively. Black officers are also trained a bit longer, 0.64 years compared to their white counterparts. The most noticeable differences between these majority and minority groups are the engagement of forceful interventions with black officers at 21.1 arrests on average compared to white officers at 24.8 arrests, and female officers at 20 arrests compared to male officers at 24.3 arrests over the probationary period. The differences are 3.7 arrests between white and black officers, and 4.3 arrests between male and female officers. These differences are statistically significant, but they are economically minor, translating to 0.21 arrests and 0.24 arrests differences every month respectively. The economically insignificant differences in the number of civilian complaints suggest that the chances of being at risk when officiating are nonetheless the same across these groups. From this table, we can conclude that from while our observations of different groups of officers: black, white, male, and female, officer cohorts are randomly constructed in terms of the training duration, and demographics, the disparities in arrest rates, use of force between genders and races underline the need to consider policing activity measures as control variables in our examination. 
+Table 1 shows the average characteristics of all new police officers in our dataset during their probationary period. On average, from our sample of $1715$ observations, the typical new officer profile shows an age of approximately $27$ years old and began training around June 2011. Over an average training period of $18.4$ months, a new officer typically submitted $0.66$ Tactical Response Reports, conducted $23.4$ arrests, and received $0.45$ of complaints. Some heterogeneity, though not large, is observed when examining the data across different rates and genders. Black and female officers who are considered minorities in policing departments, are $3$ years and $1$ year older than their white and male counterparts, respectively. Black officers are also trained a bit longer, 0.64 years compared to their white counterparts. The most noticeable differences between these majority and minority groups are the engagement of forceful interventions with black officers at 0.56 compared the white officers at 0.72 and female officers at 0.37 compared to male officers at 0.74. We find similar differences in the number of arrests: black officers of 21.1 arrests on average compared to white officers of 24.8 arrests, and female officers of 20 arrests compared to male officers of 24.3 arrests over the probationary period. The differences are 3.7 arrests between white and black officers, and 4.3 arrests between male and female officers. These differences are statistically significant, but they are economically minor, translating to 0.21 arrests and 0.24 arrests differences every month respectively. The economically insignificant differences in the number of civilian complaints suggest that the chances of being at risk when officiating are nonetheless the same across these groups. From this table, we can conclude that from while our observations of different groups of officers: black, white, male, and female, officer cohorts are randomly constructed in terms of the training duration, and demographics, the disparities in arrest rates, use of force between genders and races underline the need to consider policing activity measures as control variables in our examination. 
 
-```{r}
-#| label: Figure 1 ()
-#| fig-cap: Bills of penguins
-#| echo: false
+From this, we have formed a regression model to estimate the disparity gaps in annual award nominations between majority (white and/or male) and minority (black and/or female) in the same cohort. The following model is the regression that estimate the gap.
 
-comp_awd <- ggplot(all_officer, aes(x = Complaints, y = awd_perf)) + 
-  ggtitle("Plot of Award Score by Number of Complaints") +
-  xlab("Number of Complaints") + ylab("Award Score") +
-  geom_point(shape=18, color="blue")
-
-comp_awd
-```
-
-```{r}
-#| label: Figure 2 ()
-#| fig-cap: Bills of penguins
-#| echo: false
-
-arr_awd <- ggplot(all_officer, aes(x = arrest, y = awd_perf)) + 
-  ggtitle("Plot of Award Score by Number of Arrests") +
-  xlab("Number of Arrests") + ylab("Award Score") +
-  geom_point(shape=18, color="red")
-
-arr_awd
-```
-
-# Model
-
-
-
-## Model set-up
-Original Model
 ```{=tex}
 \begin{align}
 y_{it} &= \beta_0 + \beta_1 Black_i + \beta_2 Female_i + \beta_3 Hispanic_i \\
@@ -179,20 +147,25 @@ y_{it} &= \beta_0 + \beta_1 Black_i + \beta_2 Female_i + \beta_3 Hispanic_i \\
 ```
 
 ```{r}
-#| echo: false
+#| include = FALSE
+
 org_model <- lm(awd_perf ~ Black + Female + Hisp + Asian + Natam, data = all_officer_year)
 as_flextable(org_model)
 ```
 
 ```{r}
-#| echo: false
+#| include = FALSE
+
 black_female <- lm(awd_perf ~ Black + Female + Black:Female, 
                    data = all_officer_year)
 as_flextable(black_female)
 ```
-From this, we form a regression model to estimate the disparity gaps in award nomination between majority (white and/or male) and minority (black and/or female). The following model is the regression: y = beta0 + beta1*black + beta2*female + beta3*Hispanic + beta4*Asian where y is the number of award nomination received by an officer in one year. 
 
-Based on previous linear model we could derive
+where yit represents the number of award received by an officer i in year t. ‘Black’, ‘Female’, ‘Hispanic’, ‘Asian’ and ‘NatAm’ are binary indicator variables equal to one that indicate whether the officer belongs to one of these racial or gender groups respectively, with white male officers are a reference group. Xit includes control variables like cohort, year, birth year fixed effects along with tenure, complaints, arrests, and use of force. the authors from the original paper state that they have included squared and cubed terms for tenure, complaints, arrests and use of force to consider nonlinear effects. Standard errors are also grouped by cohort for accuracy. However, in this paper, we have the difficulty in reproducing exactly the same with the original paper in these regards because information is not published in terms of errors and second-order and third-order terms. We expect the coefficients of the variables of our findings to be slightly different to the original paper. 
+
+# Results
+
+We show our estimates for beta1 and beta2 in Table 2. It reveals that on average, a Black officer receives 10.4 fewer award nominations each year compared to a White officer of the same cohort group. When assessing gender, we observe that female officers are nominated on average 12.8 times less annually than their male counterparts. Relative to the average rates for White and male officers, these estimates suggest that black officers get approximately 28 percent fewer nominations White officers, and female officers receive around 34 percent fewer nominations than male officers. We have not fully adjusted for the errors, we could not further investigate the change in these disparities when including the error terms. In the original paper, the discrepancy between majority-minority drops significantly. Our estimates suggest that there are economically significant discrepancies for award nominations between the majority-minority groups. A Black officer who begins working in the same district at the same time as a White officer, while conducting the same policing activities, receive 28 percent fewer nominations. 
 
 ```{r}
 #| echo: false
@@ -203,77 +176,56 @@ final_model <- data.frame(bl_fm, first, second)
 kable(final_model, col.names = c("", "(1)", "(2)"))
 ```
 
-
-### Model justification
-
-We expect a positive relationship between the size of the wings and time spent aloft. In particular...
-
-We can use maths by including latex between dollar signs, for instance $\theta$.
-
-# Results
-
-Our results are summarized in @tbl-modelresults.
-
-
-# Simulation
-
+In the third column in table 2, we introduce an important variable considering race and gender by interacting black and female. The coefficient for female increase slightly for female officer to -2 nominations along with an interaction effect valued at 8.3. the results suggest that being a black officer, regardless of gender, correlates with 28 percent reduction in award nominations to their non-black male counterparts. On the other hand, our analysis highlights the importance of gender among non-black officers as non-black female officers receiving 24 percent fewer nominations when compared to non-black male officers. This intersectionality of race and gender demands more attention. Black female officers face a compounded disadvantage, indicative of systemic issue that raises awareness and needs a change in the culture and policy in the departmental culture. 
 
 # Discussion
 
-## First discussion point {#sec-first-point}
+## First discussion: Correlation between Number of Complaints and the Award Nomination
 
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this.
+The original paper does not expend its investigation by concluding that gender discrepancy exists among non-black officers. From the dataset, we have put an emphasis on the variable: complaints and wondered if there is any correlation between the award nominations for an officer and the number of complaints received and see if this affects the disparity between the majority-minority groups. We hypothesize that there is a negative correlation between the two variables; the more complaints an officer receive, the less nominations are awarded to the officer. If this pattern is found and statistically significant, this implies that the police department’s reward system is responsive to complaints, which may discourage negative behavior among officers. We have designed a scatterplot to represent the relationship between the two variables. 
 
-## Second discussion point
+```{r}
+#| label: Figure 1 ()
+#| fig-cap: Bills of penguins
+#| echo: false
 
-## Third discussion point
+comp_awd <- ggplot(all_officer, aes(x = Complaints, y = awd_perf)) + 
+  ggtitle("Plot of Award Nomination by Number of Complaints") +
+  xlab("Number of Complaints") + ylab("Award Nomination") +
+  geom_point(shape=18, color="blue")
+
+comp_awd
+```
+
+Figure 1 correlates these two variables with Complaints in the x-xis and award nominations on the y-axis. The plot shows distinct vertical clusters of points at each value of the number of complaints, a discrete variable. We find that there is a lack of a clear trend that indicates a strong negative correlation across the entire range of the data. Instead, the dense concentration of points at the lower numbers of complaints (0 to 2) suggests that officers with fewer complaints receive a wider range of award nominations from 0 to 30 in extreme cases. However, this range seems to decrease as the number of complaints increases, with fewer award nominations at the higher numbers of complaints (4 and 5). This may provide some support for the hypothesis that more complaints lead to fewer award nominations, particularly at the higher end of the complaint scale. At lower complaint scale, the likelihood of receiving award nominations may vary depending on each officer, but as it gets to the higher complaint scale, the likelihood of receiving many award nominations seem to decrease. However, it is also important to note that there may be a pattern where officers with many complaints receive fewer number of awards, there is no clear evidence of a linearity or proportionality. 
+
+## Second discussion: Correlation between Number of Arrests and Award Nomination
+
+From the dataset, we have chosen the variable arrest to see if there is any linearity or correlation between the award nominations for an officer and the number of arrests conducted and see if this affects the award nominations between the majority-minority groups in the policing department in Chicago. We hypothesize that there is a positive correlation between the two variables; the more arrests an officer makes, the more nominations are awarded to the officer. We have designed a graph to represent the relationship between the two variables with arrest in the x-axis and number of award nominations in the y-axis. 
+
+```{r}
+#| label: Figure 2 ()
+#| fig-cap: Bills of penguins
+#| echo: false
+
+arr_awd <- ggplot(all_officer, aes(x = arrest, y = awd_perf)) + 
+  ggtitle("Plot of Award Nomination by Number of Arrests") +
+  xlab("Number of Arrests") + ylab("Award Nomination") +
+  geom_point(shape=18, color="red")
+
+arr_awd
+```
+
+This figure displays a spread of award nominations across the spectrum of complaints received. This finding seems less clear from the previous discussion of complains versus award nominations. A concentration of data points in the middle range of arrests (10 to 45) suggests that no particular pattern in found in terms of award nominations for officers in this range. Proportion of high/low number of award nominated data points is distributed quite evenly in this range. From the figure, we can also observe that there is no linear pattern between the number of award nominations and arrests. With the higher number of arrests, there is no increase in award nominations; in fact, the highest award nominated officer have made less than 15 arrests. This suggests that there may not be a positive correlation between arrest numbers and award nominations, contradicting our initial hypothesis. Our hypothesis is not supported by the plot. Instead, the data may suggest that there is an optimal range of arrest activity that ensures award nominations, which seem to be 10 to 45 arrests. This might suggest that police performance metrics are not based on the quantity but quality of arrests or only a certain type of arrest activity translates into awards. Our data does not have further information on the type of arrests, which could vary significantly in legal outcome, and societal impact. 
 
 ## Weaknesses and next steps
 
-Weaknesses and next steps should also be included.
-
+While this study offers valuable insights into the dynamics of award nominations within the CPD, several limitations must be acknowledged. The dataset we have had access to are the data from the CPD, which is specific to its own demographic and department. The results from our findings may not be directly applicable to other police departments in the U.S., especially in different regions with different size and community, which restricts the broader applicability of the paper. This research makes the use of a cleaned dataset from the original study. We could not find the raw data for this study meaning potential variables and nuanced factors influencing award nominations remain unexplored. We could only investigate further from the cleaned dataset. This has resulted in some serious challenges in accurately reproducing the original study’s results due to undisclosed error terms and missing second-order and third-order terms. Lastly, potential confounding factors such as personal relationship within the department, other biases, or cultural factors may influence award nominations. 
 \newpage
 
 \appendix
 
 # Appendix {.unnumbered}
-
-# Additional data details
-
-# Model details {#sec-model-details}
-
-## Posterior predictive check
-
-
-```{r}
-#| eval: true
-#| echo: false
-#| message: false
-#| warning: false
-#| label: fig-ppcheckandposteriorvsprior
-#| layout-ncol: 2
-#| fig-cap: "Examining how the model fits, and is affected by, the data"
-#| fig-subcap: ["Posterior prediction check", "Comparing the posterior with the prior"]
-
-```
-
-## Diagnostics
-
-@fig-stanareyouokay-1 is a trace plot. It shows... This suggests...
-
-@fig-stanareyouokay-2 is a Rhat plot. It shows... This suggests...
-
-```{r}
-#| echo: false
-#| eval: true
-#| message: false
-#| warning: false
-#| label: fig-stanareyouokay
-#| fig-cap: "Checking the convergence of the MCMC algorithm"
-#| fig-subcap: ["Trace plot", "Rhat plot"]
-#| layout-ncol: 2
-
-```
 
 \newpage
 
