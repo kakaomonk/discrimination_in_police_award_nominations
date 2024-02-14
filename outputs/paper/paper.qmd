@@ -198,7 +198,7 @@ Based on previous linear model we could derive
 #| echo: false
 bl_fm <- c("Black", "Female", "Black x Female", "Mean")
 first <- c(-10.368, -12.826, "", 35.307)
-second <- c(-10.180, -14.879, 8.315, "")
+second <- c(-10.180, -14.879, 8.315, 37.583)
 final_model <- data.frame(bl_fm, first, second)
 kable(final_model, col.names = c("", "(1)", "(2)"))
 ```
@@ -215,32 +215,7 @@ We can use maths by including latex between dollar signs, for instance $\theta$.
 Our results are summarized in @tbl-modelresults.
 
 
-```{r}
-#| echo: false
-#| eval: true
-#| label: tbl-modelresults
-#| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
-#| warning: false
-
-
-```
-
 # Simulation
-```{r}
-#| echo: false
-
-#### Simulate data ####
-# set seed for the simulation
-set.seed(1002415488)
-number_simulations <- 10000
-# set a distribution of award score with normal distribution (mean: 7.054227, sd: 4.553837 based on the raw-data).
-races <- c("White", "Asian", "Black", "Natam", "Hisp")
-# Simulate 10000 times
-sim_race <- replicate(number_simulations, c(sample(races, 1, replace = TRUE), rtruncnorm(1, a = 0, mean = mean(all_officer$awd_perf), sd = sd(all_officer$awd_perf))))
-
-gender <- c("Male", "Female")
-sim_gender <- replicate(number_simulations, c(sample(gender, 1, replace = TRUE), rtruncnorm(1, a = 0, mean = mean(all_officer$awd_perf), sd = sd(all_officer$awd_perf))))
-```
 
 
 # Discussion
