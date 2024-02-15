@@ -12,10 +12,10 @@
 library(tidyverse)
 
 #### Simulate data ####
-# set seed for the simulation
+# Set seed for the simulation
 set.seed(1002415488)
 number_simulations <- 10000
-# set a distribution of award score with normal distribution (mean: 7.054227, sd: 4.553837 based on the raw-data).
+# Set a distribution of award score with normal distribution (mean: 7.054227, sd: 4.553837 based on the raw-data).
 races <- c("White", "Asian", "Black", "Natam", "Hisp")
 # Simulate 10000 times
 sim_race <- replicate(number_simulations, c(sample(races, 1, replace = TRUE), rtruncnorm(1, a = 0, mean = mean(all_officer$awd_perf), sd = sd(all_officer$awd_perf))))
