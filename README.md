@@ -17,7 +17,7 @@ The repo is structured as:
 
 -   `input/data` contains the data sources used in analysis including the raw data.
 -   `outputs/paper` contains the files used to generate the paper, including the Quarto document and reference bibliography file, as well as the PDF of the paper. 
--   `scripts` contains the R scripts used to simulate and test.
+-   `scripts` contains the R scripts used to simulate, clean dataset and test.
 
 ## Statement on LLM usage
 We did not use LLM in any aspects of the code.
